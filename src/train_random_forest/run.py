@@ -24,6 +24,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.pipeline import Pipeline, make_pipeline
 
+from mlflow.models.signature import infer_signature
+
 
 def delta_date_feature(dates):
     """
