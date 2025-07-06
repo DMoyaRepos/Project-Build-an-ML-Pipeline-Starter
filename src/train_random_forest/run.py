@@ -74,6 +74,8 @@ def go(args):
     ######################################
     # Fit the pipeline sk_pipe by calling the .fit method on X_train and y_train
     # YOUR CODE HERE
+    sk_pipe.fit(X_train, y_train)
+
     ######################################
 
     # Compute r2 and MAE
@@ -95,8 +97,25 @@ def go(args):
     ######################################
     # Save the sk_pipe pipeline as a mlflow.sklearn model in the directory "random_forest_dir"
     # HINT: use mlflow.sklearn.save_model
+
+    # The directory where the trained model will be saved
+    rf_storage_dir = 'random_forest_dir'
+
+    # Automatically infer the model's input and output schema using validation data.
+    # This helps ensure consistency during deployment and prevents runtime errors.
+    signature = infer_signature(X_val, y_pred)
+
+    # Save the trained Scikit-learn pipeline to the specified directory.
+    ## sk_model is the full pipeline (preprocessing + model)
+    ## signature defines expected input/output formats
+    ## input_example provides a sample input for model UI and serving
+    ## serialization_format ensures robust model serialization using cloudpickle
     mlflow.sklearn.save_model(
         # YOUR CODE HERE
+        sk_model = sk_pipe,
+        path = rf_storage_dir,
+        serialization_format = mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
+        signature = signature,
         input_example = X_train.iloc[:5]
     )
     ######################################
@@ -109,7 +128,7 @@ def go(args):
         description = 'Trained ranfom forest artifact',
         metadata = rf_config
     )
-    artifact.add_dir('random_forest_dir')
+    artifact.add_dir('rf_storage_dir')
     run.log_artifact(artifact)
 
     # Plot feature importance
@@ -118,8 +137,10 @@ def go(args):
     ######################################
     # Here we save variable r_squared under the "r2" key
     run.summary['r2'] = r_squared
+
     # Now save the variable mae under the key "mae".
     # YOUR CODE HERE
+    run.summary['mae'] = mae
     ######################################
 
     # Upload to W&B the feture importance visualization
@@ -163,6 +184,8 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     # 2 - A OneHotEncoder() step to encode the variable
     non_ordinal_categorical_preproc = make_pipeline(
         # YOUR CODE HERE
+        SimpleImputer(strategy="most_frequent"),
+        OneHotEncoder()
     )
     ######################################
 
@@ -226,6 +249,8 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
     sk_pipe = Pipeline(
         steps =[
         # YOUR CODE HERE
+            ('preprocessor', preprocessor),
+            ('random_forest', random_Forest)
         ]
     )
 
