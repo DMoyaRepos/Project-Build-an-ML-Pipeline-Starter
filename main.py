@@ -62,7 +62,7 @@ def go(config: DictConfig):
                     "output_artifact": "cleaned_sample.csv", #Rubric says cleaned data & cleaned sample. Choosing cleaned sample 
                     "output_type": "cleaned_sample", 
                     "output_description": "Cleaned data; price outliers removed",
-                    "min_price": config["etl"]["min_price",
+                    "min_price": config["etl"]["min_price"],
                     "max_price": config["etl"]["max_price"],
                 },
             )
