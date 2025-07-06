@@ -250,7 +250,7 @@ def get_inference_pipeline(rf_config, max_tfidf_features):
         steps =[
         # YOUR CODE HERE
             ('preprocessor', preprocessor),
-            ('random_forest', random_Forest)
+            ('random_forest', random_forest)
         ]
     )
 
