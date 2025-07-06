@@ -28,6 +28,9 @@ def go(config: DictConfig):
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
     os.environ["WANDB_RUN_GROUP"] = config["main"]["experiment_name"]
 
+    # Defining the path for MLFlow
+    root_path = hydra.utils.get_original_cwd()
+
     # Steps to execute
     steps_par = config['main']['steps']
     active_steps = steps_par.split(",") if steps_par != "all" else _steps
@@ -51,9 +54,18 @@ def go(config: DictConfig):
             )
 
         if "basic_cleaning" in active_steps:
-            ##################
-            # Implement here #
-            ##################
+            _ = mlflow.run(
+                os.path.join(root_path, "src", "basic_cleaning"),
+                "main",
+                parameters={
+                    "input_artifact": "nyc_airbnb/sample.csv:latest",
+                    "output_artifact": "cleaned_sample.csv", #Rubric says cleaned data & cleaned sample. Choosing cleaned sample 
+                    "output_type": "cleaned_sample", 
+                    "output_description": "Cleaned data; price outliers removed",
+                    "min_price": config["etl"]["min_price",
+                    "max_price": config["etl"]["max_price"],
+                },
+            )
             pass
 
         if "data_check" in active_steps:
