@@ -103,22 +103,23 @@ def go(args):
     # The directory where the trained model will be saved
     rf_storage_dir = 'random_forest_dir'
 
-    # Automatically infer the model's input and output schema using validation data.
-    # This helps ensure consistency during deployment and prevents runtime errors.
-    signature = infer_signature(X_val, y_pred)
+    # Select a sample of 15 rows from X_train, including only columns with valid MLflow-supported types.
+    # This avoids issues with object columns (e.g., mixed types or text) during model serialization.
+    X_sample = X_train.select_dtypes(include=[np.number, "bool", "category"]).iloc[:15]
 
     # Save the trained Scikit-learn pipeline to the specified directory.
-    ## sk_model is the full pipeline (preprocessing + model)
-    ## signature defines expected input/output formats
-    ## input_example provides a sample input for model UI and serving
-    ## serialization_format ensures robust model serialization using cloudpickle
+     ## sk_model is the full pipeline (preprocessing + model)
+     ## path refers to the rf_storage_dir above and indicates where the trained model will be saved
+     ## serialization_format ensures robust model serialization using cloudpickle
+     ## signature defines expected input/output formats
+     ## input_example provides a sample input for model UI and serving
     mlflow.sklearn.save_model(
         # YOUR CODE HERE
         sk_model = sk_pipe,
         path = rf_storage_dir,
         serialization_format = mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
-        signature = signature,
-        input_example = X_train.iloc[:5]
+        signature=infer_signature(X_train, sk_pipe.predict(X_train)),
+        input_example=X_sample
     )
     ######################################
 
