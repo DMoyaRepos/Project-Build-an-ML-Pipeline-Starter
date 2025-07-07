@@ -103,9 +103,9 @@ def go(args):
     # The directory where the trained model will be saved
     rf_storage_dir = 'random_forest_dir'
 
-    # Select a sample of 15 rows from X_train, including only columns with valid MLflow-supported types.
+    # Select a sample of 5 rows from X_train, including only columns with valid MLflow-supported types.
     # This avoids issues with object columns (e.g., mixed types or text) during model serialization.
-    X_sample = X_train.select_dtypes(include=[np.number, "bool", "category"]).iloc[:15]
+    X_sample = X_train.select_dtypes(include=[np.number, "bool", "category"]).iloc[:5]
 
     # Save the trained Scikit-learn pipeline to the specified directory.
      ## sk_model is the full pipeline (preprocessing + model)
