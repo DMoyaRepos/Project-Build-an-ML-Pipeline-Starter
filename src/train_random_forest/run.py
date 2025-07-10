@@ -105,7 +105,14 @@ def go(args):
 
     # Select a sample of 5 rows from X_train, including only columns with valid MLflow-supported types.
     # This avoids issues with object columns (e.g., mixed types or text) during model serialization.
-    X_sample = X_train.select_dtypes(include=[np.number, "bool", "category"]).iloc[:5]
+    X_sample = X_val.iloc[:5]      ###########   modified this line to capture all fields and pass it to the X_sample set
+
+    # Apply only the preprocessing steps (exclude final estimator)
+    X_sample_processed = sk_pipe[:-1].transform(X_sample)
+
+    # Infer MLflow model signature
+    signature = infer_signature(X_sample_processed, sk_pipe.predict(X_sample))
+    input_example = X_sample_processed
 
     # Save the trained Scikit-learn pipeline to the specified directory.
      ## sk_model is the full pipeline (preprocessing + model)
@@ -118,8 +125,8 @@ def go(args):
         sk_model = sk_pipe,
         path = rf_storage_dir,
         serialization_format = mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
-        signature=infer_signature(X_train, sk_pipe.predict(X_train)),
-        input_example=X_sample
+        signature = signature,
+        input_example = input_example
     )
     ######################################
 
@@ -131,7 +138,7 @@ def go(args):
         description = 'Trained ranfom forest artifact',
         metadata = rf_config
     )
-    artifact.add_dir('rf_storage_dir')
+    artifact.add_dir(rf_storage_dir)  ########## changed this from a literal to a variable
     run.log_artifact(artifact)
 
     # Plot feature importance
