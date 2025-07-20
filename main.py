@@ -96,7 +96,6 @@ def go(config: DictConfig):
             pass
 
         if "train_random_forest" in active_steps:
-
             # NOTE: we need to serialize the random forest configuration into JSON
             rf_config = os.path.abspath("rf_config.json")
             with open(rf_config, "w+") as fp:
@@ -117,15 +116,17 @@ def go(config: DictConfig):
                         "output_artifact": "trained_random_forest_regression"
                     },
             )
-
             pass
 
         if "test_regression_model" in active_steps:
-
-            ##################
-            # Implement here #
-            ##################
-
+             _ = mlflow.run(
+                    f"{config['main']['components_repository']}/test_regression_model",
+                    "main",
+                    parameters={
+                        "mlflow_model": "nyc_airbnb/" + config['modeling']['output_artifact'] + ":prod",
+                        "test_dataset": "nyc_airbnb/test_data.csv:latest"
+                    },
+            )
             pass
 
 
