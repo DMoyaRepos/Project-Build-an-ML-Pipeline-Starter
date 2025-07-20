@@ -122,7 +122,7 @@ def go(config: DictConfig):
                     f"{config['main']['components_repository']}/test_regression_model",
                     "main",
                     parameters={
-                        "mlflow_model": "nyc_airbnb/" + config['modeling']['output_artifact'] + ":prod",
+                        "mlflow_model": "nyc_airbnb/trained_random_forest_regression:prod",
                         "test_dataset": "nyc_airbnb/test_data.csv:latest"
                     },
             )
