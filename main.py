@@ -66,7 +66,7 @@ def go(config: DictConfig):
                     "max_price": config["etl"]["max_price"],
                 },
             )
-            pass
+
 
         if "data_check" in active_steps:
             _ = mlflow.run(
@@ -80,7 +80,7 @@ def go(config: DictConfig):
                     "max_price": config['etl']['max_price']
                 },
             )
-            pass
+
 
         if "data_split" in active_steps:
             _ = mlflow.run(
@@ -93,7 +93,7 @@ def go(config: DictConfig):
                     "stratify_by": config['modeling']['stratify_by']
                 },
             )
-            pass
+
 
         if "train_random_forest" in active_steps:
             # NOTE: we need to serialize the random forest configuration into JSON
@@ -116,7 +116,6 @@ def go(config: DictConfig):
                         "output_artifact": "trained_random_forest_regression"
                     },
             )
-            pass
 
         if "test_regression_model" in active_steps:
              _ = mlflow.run(
@@ -127,7 +126,6 @@ def go(config: DictConfig):
                         "test_dataset": "nyc_airbnb/test_data.csv:latest"
                     },
             )
-            pass
 
 
 if __name__ == "__main__":
