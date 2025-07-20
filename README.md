@@ -175,6 +175,21 @@ If you see the any error while running the command:
 
 Please, make sure all steps are using **the same** python version and that you have **conda installed**. Additionally, *mlflow* and *wandb* packages are crucial and should have the same version.
 
+## W&B Project Link
+
+https://wandb.ai/david-moya1523-western-governors-university/nyc_airbnb
+
+## Visualize Pipeline 
+
+Link to visual: https://wandb.ai/david-moya1523-western-governors-university/nyc_airbnb/artifacts/model_export/trained_random_forest_regression/prod/lineage
+
+<img width="1571" height="505" alt="image" src="https://github.com/user-attachments/assets/51b5bf33-5ad0-4bf5-8b00-d6930b1dc8c2" />
+
+## Project Release Notes
+
+**v1.0.1**
+
+This version was created to meet rubric requirements but does not include any functional changes. The project ran successfully with the initial release (v1.0.0), as the geolocation logic used in the basic cleaning step was already provided in the Udacity starter code. No additional modifications were necessary.
 
 ## License
 
