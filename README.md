@@ -165,6 +165,7 @@ If you are ok with that list, execute this command to clean them up:
 
 This will iterate over all the environments created by `mlflow` and remove them.
 
+
 ### MLflow & Wandb
 
 If you see the any error while running the command:
@@ -174,6 +175,10 @@ If you see the any error while running the command:
 ```
 
 Please, make sure all steps are using **the same** python version and that you have **conda installed**. Additionally, *mlflow* and *wandb* packages are crucial and should have the same version.
+
+## GitHub Link
+
+https://github.com/DMoyaRepos/Project-Build-an-ML-Pipeline-Starter
 
 ## W&B Project Link
 
